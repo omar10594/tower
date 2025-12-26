@@ -31,22 +31,31 @@ docker compose -f docker-compose.yml -f examples/docker-compose.downloads.yml up
 ### 3. Monitoring Services (`docker-compose.monitoring.yml`)
 Monitor your server's health and performance:
 - **Grafana**: Beautiful dashboards for metrics visualization
-- **Prometheus**: Metrics collection and storage
+- **Prometheus**: Metrics collection and storage (requires prometheus.yml config)
 - **Uptime Kuma**: Website and service uptime monitoring
 - **Netdata**: Real-time performance monitoring
-- **Scrutiny**: S.M.A.R.T. hard drive monitoring
+- **Scrutiny**: S.M.A.R.T. hard drive monitoring (requires device configuration)
+
+**Important Notes:**
+- **Prometheus**: Copy `examples/prometheus.yml` to your data directory before starting
+- **Scrutiny**: Edit the compose file to match your actual storage devices (use `lsblk` to see them)
 
 **Usage:**
 ```bash
+# Copy prometheus config first
+cp examples/prometheus.yml ${DATA_PATH:-./data}/prometheus.yml
 docker compose -f docker-compose.yml -f examples/docker-compose.monitoring.yml up -d
 ```
 
 ### 4. Network & Security (`docker-compose.network.yml`)
 Network management and security services:
 - **Nginx Proxy Manager**: Easy reverse proxy with Let's Encrypt
-- **Traefik**: Modern reverse proxy with automatic SSL
+- **Traefik**: Modern reverse proxy with automatic SSL (requires acme.json setup)
 - **Pi-hole**: Network-wide ad blocking and DNS
 - **WireGuard**: Secure VPN for remote access
+
+**Important Notes:**
+- **Traefik**: Before starting, create acme.json: `touch acme.json && chmod 600 acme.json` in your data directory
 
 **Usage:**
 ```bash
