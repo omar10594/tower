@@ -1,0 +1,54 @@
+# Media Server Services
+
+services:
+  # Plex Media Server
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ${DATA_PATH:-./data}/plex:/config
+      - ${MEDIA_PATH:-./media}:/media
+      - ${MEDIA_PATH:-./media}/tv:/tv
+      - ${MEDIA_PATH:-./media}/movies:/movies
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-America/New_York}
+      - VERSION=docker
+
+  # Jellyfin - Alternative to Plex
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    restart: unless-stopped
+    ports:
+      - "${JELLYFIN_PORT:-8096}:8096"
+      - "8920:8920"  # HTTPS
+      - "7359:7359/udp"  # Auto-discovery
+      - "1900:1900/udp"  # DLNA
+    volumes:
+      - ${DATA_PATH:-./data}/jellyfin:/config
+      - ${MEDIA_PATH:-./media}/tv:/data/tvshows
+      - ${MEDIA_PATH:-./media}/movies:/data/movies
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-America/New_York}
+
+  # Emby - Another Media Server Alternative
+  emby:
+    image: lscr.io/linuxserver/emby:latest
+    container_name: emby
+    restart: unless-stopped
+    ports:
+      - "${EMBY_PORT:-8097}:8096"
+    volumes:
+      - ${DATA_PATH:-./data}/emby:/config
+      - ${MEDIA_PATH:-./media}/tv:/data/tvshows
+      - ${MEDIA_PATH:-./media}/movies:/data/movies
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-America/New_York}

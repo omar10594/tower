@@ -1,0 +1,35 @@
+# Prometheus Configuration
+# For more information: https://prometheus.io/docs/prometheus/latest/configuration/configuration/
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+# Alertmanager configuration (optional)
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets:
+#           - alertmanager:9093
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Node Exporter (if installed)
+  # - job_name: 'node'
+  #   static_configs:
+  #     - targets: ['node-exporter:9100']
+
+  # cAdvisor for Docker metrics (if installed)
+  # - job_name: 'cadvisor'
+  #   static_configs:
+  #     - targets: ['cadvisor:8080']
+
+  # Add your custom scrape targets below
+  # - job_name: 'my-service'
+  #   static_configs:
+  #     - targets: ['my-service:9999']
