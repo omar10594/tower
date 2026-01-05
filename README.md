@@ -24,12 +24,17 @@ This setup is designed for use on an **Unraid** host, but can be adapted for oth
    - `N8N_ENCRYPTION_KEY`: Generate a secure random string for encryption
    - `CF_TUNNEL_TOKEN`: Your Cloudflare Tunnel token
 
-3. **Start the services**
+3. **Create the external network**
+   ```bash
+   docker network create n8n_network
+   ```
+
+4. **Start the services**
    ```bash
    docker-compose up -d
    ```
 
-4. **Access n8n**
+5. **Access n8n**
    - Local: http://localhost:5678
    - External: Through your Cloudflare Tunnel URL
 
