@@ -17,6 +17,8 @@ services:
       - /mnt/user/appdata/n8n_data:/home/node/.n8n
     ports:
       - "5678:5678"
+    networks:
+      - n8n_network
     healthcheck:
       test: ["CMD-SHELL", "wget --spider -q http://localhost:5678/healthz || exit 1"]
       interval: 30s
@@ -31,4 +33,10 @@ services:
       - n8n
     environment:
       TUNNEL_TOKEN: ${CF_TUNNEL_TOKEN}
+    networks:
+      - n8n_network
     command: tunnel --no-autoupdate run --token ${CF_TUNNEL_TOKEN}
+
+networks:
+  n8n_network:
+    external: true
